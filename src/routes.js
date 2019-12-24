@@ -6,6 +6,8 @@ import InitialPage from '~/pages/initialPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 
+import Dashboard from './pages/Dashboard';
+
 const Routes = createAppContainer(
   createSwitchNavigator({
     Signin: createStackNavigator(
@@ -20,6 +22,7 @@ const Routes = createAppContainer(
         transitionConfig: () => fromRight(),
       },
     ),
+    Dashboard: {screen: Dashboard},
   }),
 );
 

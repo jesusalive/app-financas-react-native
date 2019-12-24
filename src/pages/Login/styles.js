@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     padding: metrics.basePadding,
   },
 
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 150,
     height: 150,
+    margin: 0,
   },
 
   title: {
@@ -76,6 +77,12 @@ const styles = StyleSheet.create({
   textForgot: {
     color: colors.white,
     fontSize: 10,
+    textAlign: 'center',
+  },
+
+  error: {
+    color: colors.danger,
+    marginBottom: metrics.baseMargin,
     textAlign: 'center',
   },
 });
