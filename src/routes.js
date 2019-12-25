@@ -5,6 +5,7 @@ import {fromRight, zoomIn} from 'react-navigation-transitions';
 import InitialPage from '~/pages/initialPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Name from './pages/SignUp/Name';
 
 import Dashboard from './pages/Dashboard';
 
@@ -16,7 +17,17 @@ const Routes = userLogged =>
           {
             InitialPage,
             Login,
-            SignUp,
+            SignUp: createStackNavigator(
+              {
+                Index: {screen: SignUp},
+                Name,
+              },
+              {
+                initialRouteName: 'Index',
+                headerMode: 'none',
+                transitionConfig: () => fromRight(),
+              },
+            ),
           },
           {
             initialRouteName: 'InitialPage',
