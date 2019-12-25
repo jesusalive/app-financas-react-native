@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import * as yup from 'yup';
 import NetInfo from '@react-native-community/netinfo';
+import AsyncStorage from '@react-native-community/async-storage';
+import {format, parseISO} from 'date-fns';
 
 import {
   View,
@@ -42,7 +44,37 @@ export default class Login extends Component {
         username,
         password,
       })
-      .then(() => this.setState({loading: false}))
+      .then(response => {
+        const userId = response.data.userId;
+        const token = response.headers.authorization;
+        api
+          .get(`/users/${userId}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then(async ({data}) => {
+            await AsyncStorage.setItem('@UserToken', token);
+            await AsyncStorage.setItem(
+              '@UserTokenLastRefresh',
+              format(new Date(), 'yyyy-MM-dd').toString(),
+            );
+            await AsyncStorage.setItem('@User', data.nome);
+            this.props.navigation.navigate('Dashboard');
+          })
+          .catch(() =>
+            NetInfo.fetch().then(conectionResponse => {
+              if (!conectionResponse.isConnected) {
+                this.setState({
+                  loading: false,
+                  loginError:
+                    'Sem conexão com a internet! \n Não foi possível logar!',
+                });
+              }
+            }),
+          );
+        this.setState({loading: false, userId});
+      })
       .catch(err => {
         NetInfo.fetch().then(response => {
           if (!response.isConnected) {

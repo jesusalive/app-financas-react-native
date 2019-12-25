@@ -1,6 +1,6 @@
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
-import {fromRight} from 'react-navigation-transitions';
+import {fromRight, zoomIn} from 'react-navigation-transitions';
 
 import InitialPage from '~/pages/initialPage';
 import Login from './pages/Login';
@@ -8,22 +8,30 @@ import SignUp from './pages/SignUp';
 
 import Dashboard from './pages/Dashboard';
 
-const Routes = createAppContainer(
-  createSwitchNavigator({
-    Signin: createStackNavigator(
+const Routes = userLogged =>
+  createAppContainer(
+    createStackNavigator(
       {
-        InitialPage,
-        Login,
-        SignUp,
+        Signin: createStackNavigator(
+          {
+            InitialPage,
+            Login,
+            SignUp,
+          },
+          {
+            initialRouteName: 'InitialPage',
+            headerMode: 'none',
+            transitionConfig: () => fromRight(),
+          },
+        ),
+        Dashboard: {screen: Dashboard},
       },
       {
-        initialRouteName: 'InitialPage',
+        initialRouteName: userLogged ? 'Dashboard' : 'Signin',
         headerMode: 'none',
-        transitionConfig: () => fromRight(),
+        transitionConfig: () => zoomIn(),
       },
     ),
-    Dashboard: {screen: Dashboard},
-  }),
-);
+  );
 
 export default Routes;
