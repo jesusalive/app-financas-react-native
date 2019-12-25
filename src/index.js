@@ -14,7 +14,6 @@ export default class App extends Component {
   state = {
     userLogged: false,
     userChecked: false,
-    tokenChecked: false,
     connected: true,
   };
 
@@ -25,40 +24,36 @@ export default class App extends Component {
   };
 
   verifyTokenExpiration = async () => {
-    if (this.state.userLogged) {
-      const userToken = await AsyncStorage.getItem('@UserToken');
-      const lastRefresh = await AsyncStorage.getItem('@UserTokenLastRefresh');
+    const userToken = await AsyncStorage.getItem('@UserToken');
+    const lastRefresh = await AsyncStorage.getItem('@UserTokenLastRefresh');
 
-      if (lastRefresh) {
-        const lastRefreshFormated = parseISO(lastRefresh);
+    if (lastRefresh) {
+      const lastRefreshFormated = parseISO(lastRefresh);
 
-        const today = format(new Date(), 'yyyy-MM-dd');
-        const todayFormated = parseISO(today);
+      const today = format(new Date(), 'yyyy-MM-dd');
+      const todayFormated = parseISO(today);
 
-        if (differenceInDays(lastRefreshFormated, todayFormated) >= 7) {
-          api
-            .post(
-              '/refresh_token',
-              {},
-              {
-                headers: {
-                  Authorization: userToken,
-                },
+      if (differenceInDays(lastRefreshFormated, todayFormated) >= 7) {
+        api
+          .post(
+            '/refresh_token',
+            {},
+            {
+              headers: {
+                Authorization: userToken,
               },
-            )
-            .then(async refreshResponse => {
-              const token = refreshResponse.headers.authorization;
-              await AsyncStorage.setItem('@UserToken', token);
-              await AsyncStorage.setItem(
-                '@UserTokenLastRefresh',
-                format(new Date(), 'yyyy-MM-dd').toString(),
-              );
-            });
-        }
-        this.setState({tokenChecked: true});
+            },
+          )
+          .then(async refreshResponse => {
+            const token = refreshResponse.headers.authorization;
+            await AsyncStorage.setItem('@UserToken', token);
+            await AsyncStorage.setItem(
+              '@UserTokenLastRefresh',
+              format(new Date(), 'yyyy-MM-dd').toString(),
+            );
+          });
       }
     }
-    this.setState({tokenChecked: true});
   };
 
   verifyConnection = () => {
@@ -71,14 +66,13 @@ export default class App extends Component {
 
   componentDidMount() {
     this.verifyConnection();
-    this.verifyUserStatus();
     this.verifyTokenExpiration();
+    this.verifyUserStatus();
   }
 
   render() {
-    if (!this.state.tokenChecked) return <InitialLoading />;
-
     if (!this.state.connected) return <NoConnection />;
+    if (!this.state.userChecked) return <InitialLoading />;
 
     const Routes = routesFunction(this.state.userLogged);
     return <Routes />;
