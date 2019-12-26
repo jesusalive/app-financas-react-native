@@ -6,6 +6,10 @@ import InitialPage from '~/pages/initialPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Name from './pages/SignUp/Name';
+import Surname from './pages/SignUp/Surname';
+import Email from './pages/SignUp/Email';
+import Username from './pages/SignUp/Username';
+import Password from './pages/SignUp/Password';
 
 import Dashboard from './pages/Dashboard';
 
@@ -21,6 +25,10 @@ const Routes = userLogged =>
               {
                 Index: {screen: SignUp},
                 Name,
+                Surname,
+                Email,
+                Username,
+                Password,
               },
               {
                 initialRouteName: 'Index',

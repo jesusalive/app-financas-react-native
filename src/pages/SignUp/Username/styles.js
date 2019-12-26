@@ -15,7 +15,15 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 20,
     fontWeight: 'bold',
+    marginBottom: metrics.baseMargin / 1.5,
+    textAlign: 'center',
+  },
+
+  description: {
+    color: colors.white,
+    fontSize: 12,
     marginBottom: metrics.baseMargin * 2,
+    textAlign: 'center',
   },
 
   input: {

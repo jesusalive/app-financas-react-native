@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
   },
 
   welcome: {
+    justifyContent: 'center',
+    alignItems: 'center',
     marginBottom: metrics.baseMargin * 5,
   },
 

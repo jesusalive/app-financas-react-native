@@ -19,6 +19,7 @@ import {colors} from '~/styles';
 import whiteLogo from '~/styles/img/logo/logoBranco.png';
 
 import api from '~/services/api';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Login extends Component {
   state = {

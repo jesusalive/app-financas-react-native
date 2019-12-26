@@ -5,22 +5,22 @@ import * as yup from 'yup';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import styles from './styles';
+import styles from './style';
 import {colors} from '~/styles';
 
-export default class Name extends Component {
+export default class Surname extends Component {
   state = {
-    name: '',
+    surname: '',
     err: '',
   };
 
   navigateToNext = async () => {
-    const {name} = this.state;
+    const {surname} = this.state;
     await schema
-      .validate({nameUser: name.trimStart()})
+      .validate({surnameUser: surname.trimStart()})
       .then(() => {
-        AsyncStorage.setItem('@Sign/Name', name);
-        this.props.navigation.navigate('Surname');
+        AsyncStorage.setItem('@Sign/Surname', surname);
+        this.props.navigation.navigate('Email');
       })
       .catch(error => this.setState({err: error.message}));
   };
@@ -30,14 +30,14 @@ export default class Name extends Component {
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.primary} />
         <View>
-          <Text style={styles.title}>Qual seu nome?</Text>
+          <Text style={styles.title}>Qual seu último nome?</Text>
           <TextInput
             autoCompleteType="name"
             autoCorrect={false}
             autoCapitalize="sentences"
             autoFocus={true}
-            onChangeText={text => this.setState({name: text})}
-            placeholder="Exemplo: Fernando"
+            onChangeText={text => this.setState({surname: text})}
+            placeholder="Exemplo: Silva/Oliveira"
             style={styles.input}
             textContentType="name"
           />
@@ -56,13 +56,13 @@ export default class Name extends Component {
 }
 
 const schema = yup.object().shape({
-  nameUser: yup
+  surnameUser: yup
     .string()
-    .required('Informe seu nome!')
-    .min(3, 'O nome deve ter no mínimo 3 letras')
+    .required('Informe seu sobrenome!')
+    .min(3, 'O sobrenome deve ter no mínimo 3 letras')
     .notOneOf(
       ['admin', 'administrador', 'administrator'],
-      'Esse nome não é permitido',
+      'Esse sobrenome não é permitido',
     )
-    .max(20, 'Seu nome deve ter no maximo 20 letras'),
+    .max(100, 'Seu nome deve ter no maximo 20 letras'),
 });

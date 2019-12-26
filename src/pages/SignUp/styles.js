@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     color: colors.white,
+    fontWeight: 'bold',
   },
 
   icon: {
