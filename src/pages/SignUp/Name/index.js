@@ -28,9 +28,9 @@ export default class Name extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor={colors.primary} />
+        <StatusBar backgroundColor={colors.secondary} />
         <View>
-          <Text style={styles.title}>Qual seu nome?</Text>
+          <Text style={styles.title}>Qual seu primeiro nome?</Text>
           <TextInput
             autoCompleteType="name"
             autoCorrect={false}

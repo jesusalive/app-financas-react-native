@@ -14,7 +14,10 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor={colors.primary} />
+        <StatusBar
+          barStyle={'light-content'}
+          backgroundColor={colors.secondary}
+        />
         <View style={styles.containerIcon}>
           <Icon
             color={colors.white}

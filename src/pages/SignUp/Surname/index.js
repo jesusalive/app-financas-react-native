@@ -28,7 +28,7 @@ export default class Surname extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor={colors.primary} />
+        <StatusBar backgroundColor={colors.secondary} />
         <View>
           <Text style={styles.title}>Qual seu último nome?</Text>
           <TextInput

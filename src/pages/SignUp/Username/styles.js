@@ -7,32 +7,37 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.secondary,
     padding: metrics.basePadding,
+  },
+
+  inputBlock: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   title: {
     color: colors.white,
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: metrics.baseMargin / 1.5,
+    marginBottom: metrics.baseMargin,
     textAlign: 'center',
   },
 
   description: {
     color: colors.white,
     fontSize: 12,
-    marginBottom: metrics.baseMargin * 2,
     textAlign: 'center',
+    marginBottom: metrics.baseMargin * 2,
   },
 
   input: {
     paddingHorizontal: metrics.basePadding * 3,
     height: metrics.screenHeight / 15,
-    minWidth: metrics.screenWidth / 1.4,
+    maxWidth: metrics.screenWidth / 1.2,
     backgroundColor: colors.white,
     borderRadius: metrics.baseRadius * 2,
-    marginBottom: metrics.baseMargin,
+    marginBottom: metrics.baseMargin / 2,
     textAlign: 'center',
   },
 
@@ -42,7 +47,7 @@ const styles = StyleSheet.create({
   },
 
   error: {
-    color: colors.white,
+    color: colors.danger,
     textAlign: 'center',
     marginTop: metrics.baseMargin * 2,
   },

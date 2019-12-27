@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 
-import {View, Text, StatusBar, TouchableOpacity, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,11 +18,13 @@ import api from '~/services/api';
 
 export default class Username extends Component {
   state = {
+    loading: false,
     username: '',
     err: '',
   };
 
   navigateToNext = async () => {
+    this.setState({loading: true});
     const {username} = this.state;
     await schema
       .validate({nickUser: username.trimStart()})
@@ -31,22 +40,26 @@ export default class Username extends Component {
             if (!response.data.exists) {
               AsyncStorage.setItem('@Sign/Nickname', this.state.username);
               this.props.navigation.navigate('Password');
+              this.setState({loading: false});
             }
           })
           .catch(err => {
             if (err.message == 'Request failed with status code 401') {
-              this.setState({err: 'Usuario ja em uso! Tente outro'});
+              this.setState({
+                err: 'Usuario ja em uso! Tente outro',
+                loading: false,
+              });
             }
           });
       })
-      .catch(error => this.setState({err: error.message}));
+      .catch(error => this.setState({err: error.message, loading: false}));
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor={colors.primary} />
-        <View>
+        <StatusBar backgroundColor={colors.secondary} />
+        <View style={styles.inputBlock}>
           <Text style={styles.title}>Escolha um nome de usuário</Text>
           <Text style={styles.description}>
             (Ele será usado quando você for entrar na sua conta)
@@ -65,11 +78,19 @@ export default class Username extends Component {
         {this.state.err != '' && (
           <Text style={styles.error}>{this.state.err}</Text>
         )}
-        <TouchableOpacity
-          onPress={() => this.navigateToNext()}
-          style={styles.btn}>
-          <Icon name="arrow-circle-right" size={45} color={colors.white} />
-        </TouchableOpacity>
+        {!this.state.loading ? (
+          <TouchableOpacity
+            onPress={() => this.navigateToNext()}
+            style={styles.btn}>
+            <Icon name="arrow-circle-right" size={45} color={colors.white} />
+          </TouchableOpacity>
+        ) : (
+          <ActivityIndicator
+            size="large"
+            color={colors.white}
+            style={styles.btn}
+          />
+        )}
       </View>
     );
   }
