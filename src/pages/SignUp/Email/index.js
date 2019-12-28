@@ -27,7 +27,7 @@ export default class Email extends Component {
     this.setState({loading: true});
     const {email} = this.state;
     await schema
-      .validate({userEmail: email.trimStart()})
+      .validate({userEmail: email.trimStart().trimEnd()})
       .then(async () => {
         await api
           .post('/verify', {
@@ -38,7 +38,10 @@ export default class Email extends Component {
           })
           .then(response => {
             if (!response.data.exists) {
-              AsyncStorage.setItem('@Sign/Email', this.state.email);
+              AsyncStorage.setItem(
+                '@Sign/Email',
+                this.state.email.trimStart().trimEnd(),
+              );
               this.props.navigation.navigate('Username');
               this.setState({loading: false});
             }

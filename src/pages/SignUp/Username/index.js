@@ -27,7 +27,7 @@ export default class Username extends Component {
     this.setState({loading: true});
     const {username} = this.state;
     await schema
-      .validate({nickUser: username.trimStart()})
+      .validate({nickUser: username.trimStart().trimEnd()})
       .then(async () => {
         await api
           .post('/verify', {
@@ -38,7 +38,10 @@ export default class Username extends Component {
           })
           .then(response => {
             if (!response.data.exists) {
-              AsyncStorage.setItem('@Sign/Nickname', this.state.username);
+              AsyncStorage.setItem(
+                '@Sign/Nickname',
+                this.state.username.trimStart().trimEnd(),
+              );
               this.props.navigation.navigate('Password');
               this.setState({loading: false});
             }
@@ -62,7 +65,7 @@ export default class Username extends Component {
         <View style={styles.inputBlock}>
           <Text style={styles.title}>Escolha um nome de usuário</Text>
           <Text style={styles.description}>
-            (Ele será usado quando você for entrar na sua conta)
+            Ele será usado quando você for entrar na sua conta
           </Text>
           <TextInput
             autoCompleteType="username"

@@ -17,9 +17,9 @@ export default class Name extends Component {
   navigateToNext = async () => {
     const {name} = this.state;
     await schema
-      .validate({nameUser: name.trimStart()})
+      .validate({nameUser: name.trimStart().trimEnd()})
       .then(() => {
-        AsyncStorage.setItem('@Sign/Name', name);
+        AsyncStorage.setItem('@Sign/Name', name.trimStart().trimEnd());
         this.props.navigation.navigate('Surname');
       })
       .catch(error => this.setState({err: error.message}));

@@ -10,6 +10,8 @@ import Surname from './pages/SignUp/Surname';
 import Email from './pages/SignUp/Email';
 import Username from './pages/SignUp/Username';
 import Password from './pages/SignUp/Password';
+import FinishSign from './pages/SignUp/FinishSign';
+import NoConnection from './pages/NoConnection';
 
 import Dashboard from './pages/Dashboard';
 
@@ -29,6 +31,7 @@ const Routes = userLogged =>
                 Email,
                 Username,
                 Password,
+                FinishSign,
               },
               {
                 initialRouteName: 'Index',
