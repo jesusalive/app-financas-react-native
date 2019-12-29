@@ -6,7 +6,12 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
+
+import Lottie from 'lottie-react-native';
+import finish from '~/styles/animations/972-done.json';
+
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
@@ -69,6 +74,16 @@ export default class FinishSign extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.secondary} />
+        <SafeAreaView>
+          <Lottie
+            autoSize
+            resizeMode="contain"
+            source={finish}
+            autoPlay
+            loop={false}
+          />
+        </SafeAreaView>
+
         <Text style={styles.title}>Cadastro finalizado!</Text>
         <Text style={styles.welcome}>
           Seja bem vindo, {this.state.userCredentials.nome}!

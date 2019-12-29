@@ -29,6 +29,10 @@ export default class Login extends Component {
     loginError: '',
   };
 
+  static navigationOptions = {
+    headerTransparent: true,
+  };
+
   validateFields = async () => {
     const {username, password} = this.state;
     this.setState({loading: true});
@@ -95,6 +99,10 @@ export default class Login extends Component {
       });
   };
 
+  forgotPass = () => {
+    this.props.navigation.navigate('Forgot');
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -135,7 +143,9 @@ export default class Login extends Component {
                 <ActivityIndicator size="small" color={colors.white} />
               )}
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}} style={styles.forgotButton}>
+            <TouchableOpacity
+              onPress={() => this.forgotPass()}
+              style={styles.forgotButton}>
               <Text style={styles.textForgot}>Esqueci minha senha</Text>
             </TouchableOpacity>
           </View>

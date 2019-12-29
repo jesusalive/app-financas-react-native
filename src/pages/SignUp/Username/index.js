@@ -32,7 +32,7 @@ export default class Username extends Component {
         await api
           .post('/verify', {
             nome: '',
-            username,
+            username: username.trimEnd().trimStart(),
             email: '',
             password: '',
           })

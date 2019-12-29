@@ -5,9 +5,9 @@ import {colors, metrics} from '~/styles';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: colors.secondary,
     padding: metrics.basePadding,
   },
 
@@ -15,25 +15,29 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 20,
+    marginTop: 20,
+  },
+
+  pass: {
+    padding: metrics.basePadding / 2,
+    marginBottom: 20,
+    color: colors.primary,
+    fontSize: 14,
+    borderColor: colors.primary,
+    borderWidth: 1,
+    borderRadius: metrics.baseRadius * 2,
   },
 
   description: {
     color: colors.white,
+    marginBottom: 20,
+    lineHeight: 18,
     fontSize: 12,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
-
-  welcome: {
-    color: colors.success,
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 30,
     textAlign: 'center',
   },
 
-  btn: {
+  checkButton: {
     backgroundColor: colors.success,
     paddingVertical: metrics.basePadding / 2,
     paddingHorizontal: metrics.basePadding * 3,
@@ -43,17 +47,14 @@ const styles = StyleSheet.create({
     marginBottom: metrics.baseMargin,
   },
 
-  buttonText: {
+  textBtn: {
     color: colors.white,
   },
 
   error: {
     color: colors.danger,
+    marginBottom: metrics.baseMargin,
     textAlign: 'center',
-  },
-
-  animation: {
-    justifyContent: 'center',
   },
 });
 

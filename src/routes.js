@@ -4,6 +4,9 @@ import {fromRight, zoomIn} from 'react-navigation-transitions';
 
 import InitialPage from '~/pages/initialPage';
 import Login from './pages/Login';
+import Forgot from './pages/Login/Forgot';
+import ForgotCode from './pages/Login/CheckForgotCode';
+import Redefine from './pages/Login/RedefinePass';
 import SignUp from './pages/SignUp';
 import Name from './pages/SignUp/Name';
 import Surname from './pages/SignUp/Surname';
@@ -11,7 +14,6 @@ import Email from './pages/SignUp/Email';
 import Username from './pages/SignUp/Username';
 import Password from './pages/SignUp/Password';
 import FinishSign from './pages/SignUp/FinishSign';
-import NoConnection from './pages/NoConnection';
 
 import Dashboard from './pages/Dashboard';
 
@@ -22,7 +24,23 @@ const Routes = userLogged =>
         Signin: createStackNavigator(
           {
             InitialPage,
-            Login,
+            Login: createStackNavigator(
+              {
+                Login,
+                Forgot,
+                ForgotCode,
+                RedefinePassword: {
+                  screen: Redefine,
+                  navigationOptions: {headerShown: false},
+                },
+              },
+              {
+                initialRouteName: 'Login',
+                headerMode: 'float',
+                headerBackgroundTransitionPreset: 'fade',
+                transitionConfig: () => fromRight(),
+              },
+            ),
             SignUp: createStackNavigator(
               {
                 Index: {screen: SignUp},

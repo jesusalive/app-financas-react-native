@@ -1,7 +1,14 @@
 import React, {Component} from 'react';
 
-import {View, Text, StatusBar, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  View,
+  SafeAreaView,
+  Text,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
+import Lottie from 'lottie-react-native';
+import animation from '~/styles/animations/initialPageAnimation.json';
 
 import styles from './styles';
 import {colors} from '~/styles';

@@ -5,9 +5,9 @@ import {colors, metrics} from '~/styles';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.secondary,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: colors.secondary,
     padding: metrics.basePadding,
   },
 
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 20,
+    marginTop: 20,
   },
 
   description: {
@@ -25,15 +26,17 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  welcome: {
-    color: colors.success,
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 30,
+  usernameInput: {
+    paddingHorizontal: metrics.basePadding * 3,
+    height: metrics.screenHeight / 15,
+    minWidth: metrics.screenWidth / 1.4,
+    backgroundColor: colors.white,
+    borderRadius: metrics.baseRadius * 2,
+    marginVertical: metrics.baseMargin * 3,
     textAlign: 'center',
   },
 
-  btn: {
+  checkButton: {
     backgroundColor: colors.success,
     paddingVertical: metrics.basePadding / 2,
     paddingHorizontal: metrics.basePadding * 3,
@@ -43,17 +46,13 @@ const styles = StyleSheet.create({
     marginBottom: metrics.baseMargin,
   },
 
-  buttonText: {
+  textLogin: {
     color: colors.white,
   },
-
   error: {
     color: colors.danger,
+    marginBottom: metrics.baseMargin,
     textAlign: 'center',
-  },
-
-  animation: {
-    justifyContent: 'center',
   },
 });
 

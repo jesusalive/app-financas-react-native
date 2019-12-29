@@ -65,6 +65,7 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    AsyncStorage.clear();
     this.verifyConnection();
     this.verifyTokenExpiration();
     this.verifyUserStatus();

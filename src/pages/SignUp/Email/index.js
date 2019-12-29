@@ -33,7 +33,7 @@ export default class Email extends Component {
           .post('/verify', {
             nome: '',
             username: '',
-            email: email,
+            email: email.trimEnd().trimStart(),
             password: '',
           })
           .then(response => {
