@@ -14,8 +14,6 @@ import Lottie from 'lottie-react-native';
 import styles from './styles';
 import {colors} from '~/styles';
 
-import Loading01 from '~/pages/Loadings/Loading01';
-
 import animation from '~/styles/animations/972-done.json';
 import api from '~/services/api';
 import AsyncStorage from '@react-native-community/async-storage';

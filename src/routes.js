@@ -1,6 +1,9 @@
 import {createAppContainer} from 'react-navigation';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import {fromRight, zoomIn} from 'react-navigation-transitions';
+
+import {colors} from '~/styles';
 
 import InitialPage from '~/pages/initialPage';
 import Login from './pages/Login';
@@ -15,7 +18,13 @@ import Username from './pages/SignUp/Username';
 import Password from './pages/SignUp/Password';
 import FinishSign from './pages/SignUp/FinishSign';
 
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/';
+
+import Deposits from '~/pages/Dashboard/Deposits';
+import AddDeposit from '~/pages/Dashboard/Deposits/addDeposit';
+
+import Expenses from '~/pages/Dashboard/Expenses';
+import AddExpense from '~/pages/Dashboard/Expenses/AddExpense';
 
 const Routes = userLogged =>
   createAppContainer(
@@ -64,10 +73,35 @@ const Routes = userLogged =>
             transitionConfig: () => fromRight(),
           },
         ),
-        Dashboard: {screen: Dashboard},
+        App: createStackNavigator(
+          {
+            Dashboard: createMaterialBottomTabNavigator(
+              {
+                Inicio: {screen: Dashboard},
+                Entradas: {screen: Deposits},
+                Despesas: {screen: Expenses},
+              },
+              {
+                initialRouteName: 'Inicio',
+                activeColor: colors.light,
+                inactiveColor: colors.whiteTransparent,
+                shifting: true,
+                barStyle: {
+                  backgroundColor: '#071336',
+                },
+              },
+            ),
+            AddDeposit,
+            AddExpense,
+          },
+          {
+            headerMode: 'none',
+            initialRouteName: 'Dashboard',
+          },
+        ),
       },
       {
-        initialRouteName: userLogged ? 'Dashboard' : 'Signin',
+        initialRouteName: userLogged ? 'App' : 'Signin',
         headerMode: 'none',
         transitionConfig: () => zoomIn(),
       },
