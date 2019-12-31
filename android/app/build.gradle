@@ -179,6 +179,8 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_checkbox')
+    implementation project(':@react-native-community_datetimepicker')
     implementation project(':react-native-linear-gradient')
     implementation project(':lottie-react-native')
     implementation project(':react-native-vector-icons')

@@ -863,6 +863,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.7.1.tgz#ef2104d865de61ad91bba66613e57e689ff4e6a1"
   integrity sha512-/oX/x+EU4xNaqIaC/epVKzO8XghzImPA7l8cLz3USEFmtFiXFjBbTeeIFjjEm/u4/cv38Wi1xMEa10PHIWygRg==
 
+"@react-native-community/checkbox@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/checkbox/-/checkbox-0.2.2.tgz#40413657b2fd7ec92fbb53bf71a639c7864bc678"
+  integrity sha512-lmnXDrW5cH+LHfOJDkaa+5uutQ7rVsDRo3Ezea4ArHFgSCt/rAIJVmkop/DMhd37F6DH5BfTFTdM4I7GuBrHIQ==
+
 "@react-native-community/cli-debugger-ui@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli-debugger-ui/-/cli-debugger-ui-3.0.0.tgz#d01d08d1e5ddc1633d82c7d84d48fff07bd39416"
@@ -951,6 +956,13 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
     ws "^1.1.0"
+
+"@react-native-community/datetimepicker@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-2.1.0.tgz#4e3413462cbbe5c48fab6cebd422835031cdf7b9"
+  integrity sha512-InktUrx0/4JTy1YsgswljgID7oB3L8wkFobRhnLGWPExSsNHeecGW2/nBP31ZaOPHcjVWhpOQMZt0zDpKfGE/Q==
+  dependencies:
+    invariant "^2.2.4"
 
 "@react-native-community/eslint-config@^0.0.5":
   version "0.0.5"
@@ -5474,6 +5486,26 @@ react-native-gesture-handler@^1.5.2:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-input-scroll-view@^1.9.5:
+  version "1.9.5"
+  resolved "https://registry.yarnpkg.com/react-native-input-scroll-view/-/react-native-input-scroll-view-1.9.5.tgz#5e71d4483c5754146f25072aebf47d147a106ca6"
+  integrity sha512-HXhrLPqjHkXjw6e47gr4Jnicxa5/QqTtlMNAdWPnW3t70nA0jnYW4m35paxUUjTw7IZGHD0mef3drmn3XzTuFw==
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-iphone-x-helper@^1.0.3:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
+  integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
+
+react-native-keyboard-aware-scroll-view@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.1.tgz#9e54b565a5f19b30bed12221d48921781f7630af"
+  integrity sha512-tBZ8rmjELN0F6t5UBp5CW3NYmZXgVnJSzVCssv/OqG2t6kiB+OUTqxNvUP24K+HARX4H+XaW0aEJSFQkQCv6KA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-linear-gradient@^2.5.6:
   version "2.5.6"

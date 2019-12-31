@@ -46,6 +46,10 @@ target 'appFinancas' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
+  pod 'react-native-checkbox', :path => '../node_modules/@react-native-community/checkbox'
+
   target 'appFinancasTests' do
     inherit! :search_paths
     # Pods for testing
