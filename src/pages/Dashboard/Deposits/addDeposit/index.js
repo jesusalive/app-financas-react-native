@@ -10,7 +10,9 @@ import {
 } from 'react-native';
 
 import {format} from 'date-fns';
+import {TextInputMask} from 'react-native-masked-text';
 import CheckBox from '@react-native-community/checkbox';
+import * as yup from 'yup';
 import Icon from 'react-native-vector-icons/Fontisto';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -28,6 +30,25 @@ export default class addDeposit extends Component {
     showDatePicker: false,
     datePickerMode: 'date',
     fixed: false,
+    validateErr: '',
+  };
+
+  adjustValue = text => {
+    return String(text)
+      .trimEnd()
+      .trimStart()
+      .replace('R$ ', '')
+      .replace(',', '.');
+  };
+
+  validateFields = async () => {
+    const {reason, value} = this.state;
+    await schema
+      .validate({
+        reasonInput: reason,
+        valueInput: this.adjustValue(value),
+      })
+      .catch(err => this.setState({validateErr: err.message}));
   };
 
   setDate = (event, date) => {
@@ -68,27 +89,30 @@ export default class addDeposit extends Component {
           </TouchableOpacity>
 
           <TextInput
-            onContentSizeChange={this._onContentSizeChange}
-            multiline
+            value={this.state.reason}
             autoCorrect={false}
             autoCapitalize="words"
             placeholder="Qual o motivo da entrada?"
             placeholderTextColor={colors.white}
             style={styles.input}
+            onChangeText={text =>
+              this.setState({reason: text.trimStart().trimEnd()})
+            }
           />
-          <TextInput
-            onContentSizeChange={this._onContentSizeChange}
-            multiline
-            keyboardType="decimal-pad"
-            placeholder="Qual o valor?"
+          <TextInputMask
+            value={this.state.value}
+            type="money"
+            options={{
+              precision: 2,
+              separator: ',',
+              delimiter: '.',
+              unit: 'R$ ',
+            }}
             style={styles.input}
-            placeholderTextColor={colors.white}
-            onChange={text => {
-              console.tron.log(this.state.value);
+            onChangeText={text => {
               this.setState({value: text});
-            }}>
-            {this.state.value > 0 && <Text>R$ {this.state.value}</Text>}
-          </TextInput>
+            }}
+          />
           <TouchableOpacity
             onPress={() => this.datepicker()}
             style={styles.dateBtn}>
@@ -106,7 +130,6 @@ export default class addDeposit extends Component {
               disabled={false}
               value={fixed}
               onValueChange={value => {
-                console.tron.log(fixed);
                 this.setState({fixed: value});
               }}
               tintColors={{
@@ -120,7 +143,13 @@ export default class addDeposit extends Component {
             (Colocaremos todos os meses automaticamete para você)
           </Text>
 
-          <TouchableOpacity onPress={() => {}} style={styles.saveBtn}>
+          {this.state.validateErr != '' && (
+            <Text style={styles.error}>{this.state.validateErr}</Text>
+          )}
+
+          <TouchableOpacity
+            onPress={() => this.validateFields()}
+            style={styles.saveBtn}>
             <Text style={styles.saveText}>Salvar</Text>
           </TouchableOpacity>
 
@@ -139,3 +168,17 @@ export default class addDeposit extends Component {
     );
   }
 }
+
+const schema = yup.object().shape({
+  reasonInput: yup
+    .string('Digite um motivo válido')
+    .required('Digite um motivo válido')
+    .min(3, 'O motivo deve ter no mínimo 3 caracteres')
+    .max(20, 'O motivo deve ter até 20 caracteres'),
+
+  valueInput: yup
+    .number('Insira um valor válido')
+    .required('Insira um valor válido')
+    .min(0)
+    .positive('O valor não pode ser negativo'),
+});

@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     padding: metrics.basePadding,
     backgroundColor: colors.white,
     margin: metrics.baseMargin,
-    marginTop: metrics.baseMargin * 3,
+    marginTop: metrics.baseMargin * 2,
     borderRadius: metrics.baseRadius,
     width: metrics.screenWidth / 1.5,
     justifyContent: 'center',
@@ -99,7 +99,13 @@ const styles = StyleSheet.create({
   },
 
   saveText: {
-    color: colors.darker,
+    color: colors.success,
+  },
+
+  error: {
+    color: colors.danger,
+    fontSize: 12,
+    marginTop: metrics.baseMargin * 2,
   },
 });
 
