@@ -107,6 +107,40 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: metrics.baseMargin * 2,
   },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  modalContent: {
+    width: metrics.screenWidth / 1.5,
+    height: 155,
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 20,
+  },
+
+  modalTitle: {
+    color: colors.darker,
+    textAlign: 'center',
+  },
+
+  modalBtn: {
+    width: 100,
+    height: 35,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.success,
+    borderRadius: metrics.baseRadius,
+  },
+
+  modalBtnText: {
+    color: colors.lighter,
+  },
 });
 
 export default styles;

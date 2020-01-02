@@ -7,9 +7,13 @@ import {
   StatusBar,
   Platform,
   TouchableOpacity,
+  ActivityIndicator,
+  Button,
 } from 'react-native';
 
 import {format} from 'date-fns';
+import Modal from 'react-native-modal';
+import AsyncStorage from '@react-native-community/async-storage';
 import {TextInputMask} from 'react-native-masked-text';
 import CheckBox from '@react-native-community/checkbox';
 import * as yup from 'yup';
@@ -20,10 +24,11 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import styles from './styles';
 import {colors} from '~/styles';
+import api from '~/services/api';
 
 export default class addDeposit extends Component {
   state = {
-    //FIXED PRECISA SER INVERTIDO
+    loading: false,
     reason: '',
     value: 0,
     date: new Date(),
@@ -31,6 +36,11 @@ export default class addDeposit extends Component {
     datePickerMode: 'date',
     fixed: false,
     validateErr: '',
+    isModalVisible: false,
+  };
+
+  toogleModal = () => {
+    this.setState({isModalVisible: !this.state.isModalVisible});
   };
 
   adjustValue = text => {
@@ -42,13 +52,41 @@ export default class addDeposit extends Component {
   };
 
   validateFields = async () => {
+    this.setState({loading: true});
     const {reason, value} = this.state;
     await schema
       .validate({
-        reasonInput: reason,
+        reasonInput: reason.trimEnd().trimEnd(),
         valueInput: this.adjustValue(value),
       })
-      .catch(err => this.setState({validateErr: err.message}));
+      .then(() => {
+        this.registerDeposit();
+      })
+      .catch(err => this.setState({loading: false, validateErr: err.message}));
+  };
+
+  registerDeposit = async () => {
+    const {date, reason, fixed, value} = this.state;
+    const adjustedReason = reason.trimEnd().trimStart();
+    const adjustedDate = format(date, 'yyyy-MM-dd');
+    const adjustedValue = this.adjustValue(value);
+    const user = await AsyncStorage.getItem('@UserId');
+    const token = await AsyncStorage.getItem('@UserToken');
+
+    const entry = {
+      userId: parseInt(user),
+      reason: adjustedReason,
+      value: parseFloat(adjustedValue),
+      date: adjustedDate,
+      fixed,
+    };
+
+    await api
+      .post('/deposits', entry, {headers: {Authorization: token}})
+      .then(response => {
+        this.setState({loading: false});
+        this.toogleModal();
+      });
   };
 
   setDate = (event, date) => {
@@ -81,7 +119,20 @@ export default class addDeposit extends Component {
             backgroundColor={colors.success}
             barStyle={'light-content'}
           />
-
+          <Modal isVisible={this.state.isModalVisible}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>
+                  Entrada registrada com sucesso!
+                </Text>
+                <TouchableOpacity
+                  style={styles.modalBtn}
+                  onPress={() => this.props.navigation.navigate('Entradas')}>
+                  <Text style={styles.modalBtnText}>Concluir!</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('Entradas')}
             style={styles.closeButton}>
@@ -95,9 +146,7 @@ export default class addDeposit extends Component {
             placeholder="Qual o motivo da entrada?"
             placeholderTextColor={colors.white}
             style={styles.input}
-            onChangeText={text =>
-              this.setState({reason: text.trimStart().trimEnd()})
-            }
+            onChangeText={text => this.setState({reason: text})}
           />
           <TextInputMask
             value={this.state.value}
@@ -150,7 +199,11 @@ export default class addDeposit extends Component {
           <TouchableOpacity
             onPress={() => this.validateFields()}
             style={styles.saveBtn}>
-            <Text style={styles.saveText}>Salvar</Text>
+            {this.state.loading ? (
+              <ActivityIndicator size="small" color={colors.success} />
+            ) : (
+              <Text style={styles.saveText}>Salvar</Text>
+            )}
           </TouchableOpacity>
 
           {showDatePicker && (

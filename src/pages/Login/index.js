@@ -65,6 +65,7 @@ export default class Login extends Component {
               format(new Date(), 'yyyy-MM-dd').toString(),
             );
             await AsyncStorage.setItem('@User', data.nome);
+            await AsyncStorage.setItem('@UserId', userId);
             this.props.navigation.navigate('Dashboard');
           })
           .catch(() =>
