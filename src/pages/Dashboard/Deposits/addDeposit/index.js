@@ -8,7 +8,6 @@ import {
   Platform,
   TouchableOpacity,
   ActivityIndicator,
-  Button,
 } from 'react-native';
 
 import {format} from 'date-fns';
@@ -48,6 +47,7 @@ export default class addDeposit extends Component {
       .trimEnd()
       .trimStart()
       .replace('R$ ', '')
+      .replace('.', '')
       .replace(',', '.');
   };
 
