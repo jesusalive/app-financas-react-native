@@ -9,6 +9,7 @@ export default {
 
   primary: '#0288b5',
   secondary: '#000c29',
+  lightBlue: '#071336',
   success: '#68d42a',
   danger: '#e04848',
 

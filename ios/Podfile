@@ -50,6 +50,8 @@ target 'appFinancas' do
 
   pod 'react-native-checkbox', :path => '../node_modules/@react-native-community/checkbox'
 
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   target 'appFinancasTests' do
     inherit! :search_paths
     # Pods for testing

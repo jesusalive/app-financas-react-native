@@ -9,9 +9,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     flexWrap: 'wrap',
+    flexDirection: 'row',
     padding: metrics.basePadding,
     borderColor: colors.success,
-    borderWidth: 1,
+    borderBottomWidth: 1,
     borderRadius: metrics.baseRadius,
     marginVertical: metrics.baseMargin,
   },
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
   },
 
   descriptionText: {
-    color: colors.white,
+    color: colors.lighter,
     fontSize: 10,
   },
 });

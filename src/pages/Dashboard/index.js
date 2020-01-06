@@ -32,7 +32,7 @@ export default class Dashboard extends Component {
     return (
       <View style={styles.container}>
         <StatusBar
-          backgroundColor={colors.secondary}
+          backgroundColor={colors.lightBlue}
           barStyle="light-content"
         />
         <View>

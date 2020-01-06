@@ -6,18 +6,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: colors.secondary,
-  },
-
-  depositsCard: {
-    backgroundColor: colors.transparent,
     justifyContent: 'center',
     alignItems: 'center',
-    height: metrics.screenHeight / 1.5,
-    width: metrics.screenWidth,
-    padding: 10,
+    backgroundColor: colors.secondary,
   },
 
   btn: {
@@ -28,23 +19,21 @@ const styles = StyleSheet.create({
     borderColor: colors.success,
     borderWidth: 1,
     borderRadius: metrics.baseRadius * 2,
-    marginTop: metrics.baseMargin * 3,
+    marginTop: metrics.baseMargin * 2,
+    marginBottom: metrics.baseMargin,
   },
 
   btnText: {
+    textAlign: 'center',
     color: colors.success,
     marginLeft: 10,
   },
 
-  error: {
+  animation: {height: metrics.screenHeight / 2.5},
+  animationText: {
     color: colors.danger,
-    fontSize: 12,
     textAlign: 'center',
-  },
-
-  fixedDepositsList: {
-    flex: 1,
-    width: metrics.screenWidth / 1.3,
+    marginTop: metrics.baseMargin,
   },
 });
 

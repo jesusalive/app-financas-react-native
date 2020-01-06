@@ -119,7 +119,7 @@ export default class addDeposit extends Component {
             backgroundColor={colors.success}
             barStyle={'light-content'}
           />
-          <Modal isVisible={this.state.isModalVisible}>
+          <Modal animationIn="pulse" isVisible={this.state.isModalVisible}>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>

@@ -1,4 +1,6 @@
+import React from 'react';
 import {createAppContainer} from 'react-navigation';
+import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import {fromRight, zoomIn} from 'react-navigation-transitions';
@@ -20,7 +22,9 @@ import FinishSign from './pages/SignUp/FinishSign';
 
 import Dashboard from './pages/Dashboard/';
 
-import Deposits from '~/pages/Dashboard/Deposits';
+import AllDeposits from '~/pages/Dashboard/Deposits/AllDeposits';
+import FixedDeposits from '~/pages/Dashboard/Deposits/FixedDeposits';
+import IconDeposits from 'react-native-vector-icons/FontAwesome5';
 import AddDeposit from '~/pages/Dashboard/Deposits/addDeposit';
 
 import Expenses from '~/pages/Dashboard/Expenses';
@@ -77,9 +81,45 @@ const Routes = userLogged =>
           {
             Dashboard: createMaterialBottomTabNavigator(
               {
-                Inicio: {screen: Dashboard},
-                Entradas: {screen: Deposits},
-                Despesas: {screen: Expenses},
+                Inicio: {
+                  screen: Dashboard,
+                  navigationOptions: {tabBarColor: colors.lightBlue},
+                },
+                Entradas: {
+                  screen: createMaterialTopTabNavigator(
+                    {
+                      Todas: {screen: AllDeposits},
+                      Fixas: {screen: FixedDeposits},
+                    },
+                    {
+                      tabBarOptions: {
+                        activeTintColor: colors.white,
+                        inactiveTintColor: colors.whiteTransparent,
+                        indicatorStyle: {
+                          borderColor: colors.white,
+                          borderWidth: 1,
+                        },
+                        tabStyle: {
+                          backgroundColor: colors.lightBlue,
+                        },
+                      },
+                    },
+                  ),
+                  navigationOptions: {
+                    tabBarIcon: ({tintColor}) => (
+                      <IconDeposits
+                        name="hand-holding-usd"
+                        size={20}
+                        color={tintColor}
+                      />
+                    ),
+                    tabBarColor: colors.success,
+                  },
+                },
+                Despesas: {
+                  screen: Expenses,
+                  navigationOptions: {tabBarColor: colors.danger},
+                },
               },
               {
                 initialRouteName: 'Inicio',
@@ -87,7 +127,7 @@ const Routes = userLogged =>
                 inactiveColor: colors.whiteTransparent,
                 shifting: true,
                 barStyle: {
-                  backgroundColor: '#071336',
+                  backgroundColor: colors.lightBlue,
                 },
               },
             ),
