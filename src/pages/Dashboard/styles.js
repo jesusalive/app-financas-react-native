@@ -11,7 +11,21 @@ const styles = StyleSheet.create({
   },
 
   nameContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
+  },
+
+  logOut: {
+    marginLeft: metrics.baseMargin / 2,
+    color: colors.danger,
+  },
+
+  logOutBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginLeft: metrics.baseMargin,
   },
 
   title: {

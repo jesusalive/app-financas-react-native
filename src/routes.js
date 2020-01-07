@@ -27,8 +27,10 @@ import FixedDeposits from '~/pages/Dashboard/Deposits/FixedDeposits';
 import IconDeposits from 'react-native-vector-icons/FontAwesome5';
 import AddDeposit from '~/pages/Dashboard/Deposits/addDeposit';
 
-import Expenses from '~/pages/Dashboard/Expenses';
+import IconExpense from 'react-native-vector-icons/MaterialIcons';
 import AddExpense from '~/pages/Dashboard/Expenses/AddExpense';
+import AllFixedExpenses from '~/pages/Dashboard/Expenses/FixedExpenses';
+import AllExpenses from './pages/Dashboard/Expenses/AllExpenses';
 
 const Routes = userLogged =>
   createAppContainer(
@@ -88,7 +90,10 @@ const Routes = userLogged =>
                 Entradas: {
                   screen: createMaterialTopTabNavigator(
                     {
-                      Todas: {screen: AllDeposits},
+                      Todas: {
+                        screen: AllDeposits,
+                        navigationOptions: {title: 'Este mês'},
+                      },
                       Fixas: {screen: FixedDeposits},
                     },
                     {
@@ -117,8 +122,38 @@ const Routes = userLogged =>
                   },
                 },
                 Despesas: {
-                  screen: Expenses,
-                  navigationOptions: {tabBarColor: colors.danger},
+                  screen: createMaterialTopTabNavigator(
+                    {
+                      Todas: {
+                        screen: AllExpenses,
+                        navigationOptions: {title: 'Este mês'},
+                      },
+                      Fixas: {screen: AllFixedExpenses},
+                    },
+                    {
+                      tabBarOptions: {
+                        activeTintColor: colors.white,
+                        inactiveTintColor: colors.whiteTransparent,
+                        indicatorStyle: {
+                          borderColor: colors.white,
+                          borderWidth: 1,
+                        },
+                        tabStyle: {
+                          backgroundColor: colors.lightBlue,
+                        },
+                      },
+                    },
+                  ),
+                  navigationOptions: {
+                    tabBarIcon: ({tintColor}) => (
+                      <IconExpense
+                        name="trending-down"
+                        size={20}
+                        color={tintColor}
+                      />
+                    ),
+                    tabBarColor: colors.danger,
+                  },
                 },
               },
               {

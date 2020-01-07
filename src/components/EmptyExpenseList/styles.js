@@ -11,19 +11,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
   },
 
-  expensesCard: {
-    backgroundColor: colors.light,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: metrics.screenHeight / 2,
-    width: metrics.screenWidth / 1.2,
-    borderRadius: metrics.baseRadius,
-    padding: 10,
-  },
-
   btn: {
-    position: 'absolute',
-    bottom: 30,
     flexDirection: 'row',
     paddingHorizontal: metrics.basePadding,
     paddingVertical: metrics.basePadding / 1.5,
@@ -31,12 +19,27 @@ const styles = StyleSheet.create({
     borderColor: colors.danger,
     borderWidth: 1,
     borderRadius: metrics.baseRadius * 2,
-    marginTop: metrics.baseMargin * 3,
+    marginTop: metrics.baseMargin * 2,
+    marginBottom: metrics.baseMargin,
   },
 
   btnText: {
+    textAlign: 'center',
     color: colors.danger,
     marginLeft: 10,
+  },
+
+  sugestion: {
+    textAlign: 'center',
+    color: colors.white,
+    marginLeft: 10,
+  },
+
+  animation: {height: metrics.screenHeight / 2.5},
+  animationText: {
+    color: colors.white,
+    textAlign: 'center',
+    marginTop: metrics.baseMargin,
   },
 });
 

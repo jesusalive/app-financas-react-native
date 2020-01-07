@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  depositsList: {
+  expenseList: {
     flex: 1,
     marginTop: 0,
     width: metrics.screenWidth / 1.1,

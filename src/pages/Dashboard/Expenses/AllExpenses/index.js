@@ -16,12 +16,12 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 import api from '~/services/api';
 import {colors} from '~/styles';
-import EmptyList from '~/components/EmptyList';
-import DepositItem from '~/pages/Dashboard/Deposits/DepositItem';
+import EmptyExpenseList from '~/components/EmptyExpenseList';
+import ExpenseItem from '~/pages/Dashboard/Expenses/ExpenseItem';
 
-export default class AllDeposits extends Component {
+export default class AllExpenses extends Component {
   state = {
-    deposits: [],
+    expenses: [],
     err: '',
     date: new Date(),
     loading: false,
@@ -29,11 +29,11 @@ export default class AllDeposits extends Component {
   };
 
   async componentDidMount() {
-    await this.findAllFixedDeposits();
-    await this.findAllMonthDeposits();
+    await this.findAllFixedExpenses();
+    await this.findAllMonthExpenses();
   }
 
-  findAllMonthDeposits = async () => {
+  findAllMonthExpenses = async () => {
     this.setState({refreshing: true, loading: true});
     const token = await AsyncStorage.getItem('@UserToken');
     const user = await AsyncStorage.getItem('@UserId');
@@ -41,12 +41,12 @@ export default class AllDeposits extends Component {
     const year = format(this.state.date, 'yyyy');
 
     await api
-      .get(`/deposits/${user}/${month}/${year}`, {
+      .get(`/outs/${user}/${month}/${year}`, {
         headers: {Authorization: token},
       })
       .then(response => {
         response.data.map(item =>
-          this.setState({deposits: [...this.state.deposits, item]}),
+          this.setState({expenses: [...this.state.expenses, item]}),
         );
 
         this.setState({loading: false, refreshing: false});
@@ -60,15 +60,15 @@ export default class AllDeposits extends Component {
       );
   };
 
-  findAllFixedDeposits = async () => {
+  findAllFixedExpenses = async () => {
     this.setState({refreshing: true, loading: true});
     const token = await AsyncStorage.getItem('@UserToken');
     const user = await AsyncStorage.getItem('@UserId');
     await api
-      .get(`/deposits/fixed/${user}`, {headers: {Authorization: token}})
+      .get(`/outs/fixed/${user}`, {headers: {Authorization: token}})
       .then(response => {
         response.data.map(item =>
-          this.setState({deposits: [...this.state.deposits, item]}),
+          this.setState({expenses: [...this.state.expenses, item]}),
         );
 
         this.setState({loading: false, refreshing: false});
@@ -80,7 +80,7 @@ export default class AllDeposits extends Component {
       );
   };
 
-  renderDeposit = ({item}) => {
+  renderExpense = ({item}) => {
     const day = format(subDays(parseISO(item.date), 1), 'dd');
     const teste = parseFloat(item.value)
       .toFixed(2) // casas decimais
@@ -88,14 +88,20 @@ export default class AllDeposits extends Component {
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 
     return (
-      <DepositItem id={item.id} title={item.reason} value={teste} date={day} />
+      <ExpenseItem
+        id={item.id}
+        status={item.status}
+        title={item.reason}
+        value={teste}
+        date={day}
+      />
     );
   };
 
   refreshHandller = async () => {
-    this.setState({deposits: []});
-    await this.findAllFixedDeposits();
-    await this.findAllMonthDeposits();
+    this.setState({expenses: []});
+    await this.findAllFixedExpenses();
+    await this.findAllMonthExpenses();
   };
 
   render() {
@@ -108,29 +114,29 @@ export default class AllDeposits extends Component {
         {this.state.err != '' ? (
           <Text style={styles.error}>{this.state.err}</Text>
         ) : this.state.loading ? (
-          <ActivityIndicator size="large" color={colors.success} />
+          <ActivityIndicator size="large" color={colors.danger} />
         ) : (
           <View>
             <FlatList
-              style={styles.depositsList}
-              data={this.state.deposits}
-              renderItem={item => this.renderDeposit(item)}
+              style={styles.expenseList}
+              data={this.state.expenses}
+              renderItem={item => this.renderExpense(item)}
               keyExtractor={item => String(item.id)}
-              ListEmptyComponent={<EmptyList />}
+              ListEmptyComponent={<EmptyExpenseList />}
               showsVerticalScrollIndicator={false}
               refreshControl={
                 <RefreshControl
                   progressBackgroundColor={colors.lightBlue}
-                  colors={[colors.success]}
+                  colors={[colors.danger]}
                   onRefresh={() => this.refreshHandller()}
                   refreshing={this.state.refreshing}
                 />
               }
             />
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('AddDeposit')}
+              onPress={() => this.props.navigation.navigate('AddExpense')}
               style={styles.addBtn}>
-              <Icon name="pluscircle" color={colors.success} size={40} />
+              <Icon name="pluscircle" color={colors.danger} size={40} />
             </TouchableOpacity>
           </View>
         )}

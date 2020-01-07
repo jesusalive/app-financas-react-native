@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
   btn: {
     position: 'relative',
-    top: 100,
+    top: 50,
   },
 
   error: {

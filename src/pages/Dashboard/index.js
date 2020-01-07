@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {View, Text, StatusBar} from 'react-native';
+import {View, Text, StatusBar, TouchableOpacity} from 'react-native';
+import LogOutIcon from 'react-native-vector-icons/AntDesign';
 
 import styles from './styles';
 import {colors} from '~/styles';
@@ -23,6 +24,11 @@ export default class Dashboard extends Component {
     this.getUser();
   }
 
+  logOut = async () => {
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Login');
+  };
+
   getUser = async () => {
     const name = await AsyncStorage.getItem('@User');
     this.setState({user: name});
@@ -40,6 +46,13 @@ export default class Dashboard extends Component {
             <Text style={styles.title}>Olá, </Text>
             <Text style={styles.name}>{this.state.user}</Text>
             <Text style={styles.title}> !</Text>
+            <TouchableOpacity
+              onPress={() => this.logOut()}
+              style={styles.logOutBtn}>
+              <LogOutIcon name="logout" size={10} color={colors.danger} />
+
+              <Text style={styles.logOut}>Sair</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.middleBox}>

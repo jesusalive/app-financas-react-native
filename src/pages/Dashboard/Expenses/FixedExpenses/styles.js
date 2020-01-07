@@ -1,18 +1,23 @@
 import {StyleSheet} from 'react-native';
+
 import {colors, metrics} from '~/styles';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    paddingHorizontal: 20,
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: colors.secondary,
   },
 
-  sectionTitle: {
-    textAlign: 'center',
-    color: colors.success,
-    marginTop: metrics.baseMargin,
+  depositsCard: {
+    backgroundColor: colors.transparent,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: metrics.screenHeight / 1.5,
+    width: metrics.screenWidth,
+    padding: 10,
   },
 
   error: {
@@ -21,17 +26,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  depositsList: {
+  fixedExpensesList: {
     flex: 1,
     marginTop: 0,
     width: metrics.screenWidth / 1.1,
-  },
-
-  addBtn: {
-    position: 'absolute',
-    bottom: 15,
-    right: 15,
-    tintColor: colors.white,
   },
 });
 

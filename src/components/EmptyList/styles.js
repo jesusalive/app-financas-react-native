@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 
   animation: {height: metrics.screenHeight / 2.5},
   animationText: {
-    color: colors.danger,
+    color: colors.white,
     textAlign: 'center',
     marginTop: metrics.baseMargin,
   },
