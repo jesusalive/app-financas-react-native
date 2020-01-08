@@ -17,6 +17,7 @@ import EmptyList from '~/components/EmptyList';
 import styles from './styles';
 import {colors} from '~/styles';
 import api from '~/services/api';
+import {NavigationEvents} from 'react-navigation';
 
 export default class FixedDeposits extends Component {
   state = {
@@ -68,6 +69,9 @@ export default class FixedDeposits extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={async () => this.findAllFixedDeposits()}
+        />
         <StatusBar
           barStyle="light-content"
           backgroundColor={colors.lightBlue}

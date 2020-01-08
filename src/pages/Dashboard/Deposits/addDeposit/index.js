@@ -109,6 +109,11 @@ export default class addDeposit extends Component {
     this.show('date');
   };
 
+  navigateToDeposits = async () => {
+    await AsyncStorage.setItem('@RefreshDeposits', 'true');
+    this.props.navigation.navigate('Entradas');
+  };
+
   render() {
     const {showDatePicker, date, datePickerMode, fixed} = this.state;
     const year = date.getFullYear();
@@ -127,14 +132,14 @@ export default class addDeposit extends Component {
                 </Text>
                 <TouchableOpacity
                   style={styles.modalBtn}
-                  onPress={() => this.props.navigation.navigate('Entradas')}>
+                  onPress={() => this.navigateToDeposits()}>
                   <Text style={styles.modalBtnText}>Concluir!</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Entradas')}
+            onPress={() => this.props.navigation.goBack()}
             style={styles.closeButton}>
             <CloseIcon name="closecircle" size={25} color={colors.white} />
           </TouchableOpacity>

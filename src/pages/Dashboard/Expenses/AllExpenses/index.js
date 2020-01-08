@@ -18,6 +18,7 @@ import api from '~/services/api';
 import {colors} from '~/styles';
 import EmptyExpenseList from '~/components/EmptyExpenseList';
 import ExpenseItem from '~/pages/Dashboard/Expenses/ExpenseItem';
+import {NavigationEvents} from 'react-navigation';
 
 export default class AllExpenses extends Component {
   state = {
@@ -107,6 +108,16 @@ export default class AllExpenses extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={async () => {
+            const refresh = await AsyncStorage.getItem('@RefreshExpenses');
+
+            if (refresh == 'true') {
+              await AsyncStorage.removeItem('@RefreshExpenses');
+              this.refreshHandller();
+            }
+          }}
+        />
         <StatusBar
           barStyle="light-content"
           backgroundColor={colors.lightBlue}

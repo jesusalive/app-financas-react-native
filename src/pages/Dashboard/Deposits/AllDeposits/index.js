@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {format, parseISO, subDays} from 'date-fns';
 import AsyncStorage from '@react-native-community/async-storage';
+import {NavigationEvents} from 'react-navigation';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import styles from './styles';
@@ -27,11 +28,6 @@ export default class AllDeposits extends Component {
     loading: false,
     refreshing: false,
   };
-
-  async componentDidMount() {
-    await this.findAllFixedDeposits();
-    await this.findAllMonthDeposits();
-  }
 
   findAllMonthDeposits = async () => {
     this.setState({refreshing: true, loading: true});
@@ -101,6 +97,16 @@ export default class AllDeposits extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={async () => {
+            const refresh = await AsyncStorage.getItem('@RefreshDeposits');
+
+            if (refresh == 'true') {
+              await AsyncStorage.removeItem('@RefreshDeposits');
+              this.refreshHandller();
+            }
+          }}
+        />
         <StatusBar
           barStyle="light-content"
           backgroundColor={colors.lightBlue}

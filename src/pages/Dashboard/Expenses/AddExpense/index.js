@@ -108,6 +108,11 @@ export default class addExpense extends Component {
     this.show('date');
   };
 
+  navigateToExpenses = async () => {
+    await AsyncStorage.setItem('@RefreshExpenses', 'true');
+    this.props.navigation.navigate('Despesas');
+  };
+
   render() {
     const {showDatePicker, date, datePickerMode, fixed} = this.state;
     const year = date.getFullYear();
@@ -118,7 +123,7 @@ export default class addExpense extends Component {
             backgroundColor={colors.danger}
             barStyle={'light-content'}
           />
-          <Modal animationIn="pulse" isVisible={this.state.isModalVisible}>
+          <Modal animationIn="pulse" isVisible={true}>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>
@@ -126,14 +131,14 @@ export default class addExpense extends Component {
                 </Text>
                 <TouchableOpacity
                   style={styles.modalBtn}
-                  onPress={() => this.props.navigation.navigate('Despesas')}>
+                  onPress={() => this.navigateToExpenses()}>
                   <Text style={styles.modalBtnText}>Concluir!</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Despesas')}
+            onPress={() => this.props.navigation.goBack()}
             style={styles.closeButton}>
             <CloseIcon name="closecircle" size={25} color={colors.white} />
           </TouchableOpacity>

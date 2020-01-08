@@ -17,6 +17,7 @@ import EmptyExpenseList from '~/components/EmptyExpenseList';
 import styles from './styles';
 import {colors} from '~/styles';
 import api from '~/services/api';
+import {NavigationEvents} from 'react-navigation';
 
 export default class FixedExpenses extends Component {
   state = {
@@ -68,6 +69,9 @@ export default class FixedExpenses extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={async () => this.findAllFixedExpenses()}
+        />
         <StatusBar
           barStyle="light-content"
           backgroundColor={colors.lightBlue}
