@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import {format, parseISO} from 'date-fns';
+import {format, parseISO, subDays} from 'date-fns';
 
 import FixedExpenseItem from '../FixedExpenseItem/index.js';
 import EmptyExpenseList from '~/components/EmptyExpenseList';
@@ -32,16 +32,30 @@ export default class FixedExpenses extends Component {
     await this.findAllFixedExpenses();
   }
 
+  organizeExpenses = () => {
+    this.state.fixedExpenses.sort((item1, item2) => {
+      const firstDay = format(subDays(parseISO(item1.date), 1), 'dd');
+      const secondDay = format(subDays(parseISO(item2.date), 1), 'dd');
+
+      if (parseInt(firstDay) < parseInt(secondDay)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+  };
+
   findAllFixedExpenses = async () => {
-    if (this.state.loading) return;
     this.setState({refreshing: true, loading: true});
     const token = await AsyncStorage.getItem('@UserToken');
     const user = await AsyncStorage.getItem('@UserId');
     await api
       .get(`/outs/fixed/${user}`, {headers: {Authorization: token}})
-      .then(({data}) =>
-        this.setState({fixedExpenses: data, refreshing: false, loading: false}),
-      )
+      .then(({data}) => {
+        this.setState({fixedExpenses: data});
+        this.organizeExpenses();
+        this.setState({loading: false, refreshing: false});
+      })
       .catch(() =>
         this.setState({
           err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',

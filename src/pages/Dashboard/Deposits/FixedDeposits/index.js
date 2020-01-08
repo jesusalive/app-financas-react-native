@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
-import {format, parseISO} from 'date-fns';
+import {format, parseISO, subDays} from 'date-fns';
 
 import FixedDepositItem from '../FixedDepositItem/index.js';
 import EmptyList from '~/components/EmptyList';
@@ -28,6 +28,19 @@ export default class FixedDeposits extends Component {
     refreshing: false,
   };
 
+  organizeDeposits = () => {
+    this.state.fixedDeposits.sort((item1, item2) => {
+      const firstDay = format(subDays(parseISO(item1.date), 1), 'dd');
+      const secondDay = format(subDays(parseISO(item2.date), 1), 'dd');
+
+      if (parseInt(firstDay) < parseInt(secondDay)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+  };
+
   async componentDidMount() {
     await this.findAllFixedDeposits();
   }
@@ -39,9 +52,14 @@ export default class FixedDeposits extends Component {
     const user = await AsyncStorage.getItem('@UserId');
     await api
       .get(`/deposits/fixed/${user}`, {headers: {Authorization: token}})
-      .then(({data}) =>
-        this.setState({fixedDeposits: data, refreshing: false, loading: false}),
-      )
+      .then(({data}) => {
+        this.setState({
+          fixedDeposits: data,
+          refreshing: false,
+          loading: false,
+        });
+        this.organizeDeposits();
+      })
       .catch(() =>
         this.setState({
           err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',

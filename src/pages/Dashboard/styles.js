@@ -62,6 +62,32 @@ const styles = StyleSheet.create({
     elevation: 18,
   },
 
+  loadingBox: {
+    width: metrics.screenWidth / 1.3,
+    height: metrics.screenHeight / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+    paddingVertical: 30,
+    marginTop: 40,
+    borderRadius: metrics.baseRadius * 2,
+    backgroundColor: colors.light,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 9,
+    },
+    shadowOpacity: 1.0,
+    shadowRadius: 5,
+
+    elevation: 18,
+  },
+
+  loadingText: {
+    color: colors.primary,
+    fontSize: 12,
+  },
+
   boxTitle: {
     color: colors.dark,
     fontWeight: 'bold',

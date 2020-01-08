@@ -29,10 +29,18 @@ export default class AllExpenses extends Component {
     refreshing: false,
   };
 
-  async componentDidMount() {
-    await this.findAllFixedExpenses();
-    await this.findAllMonthExpenses();
-  }
+  organizeExpenses = () => {
+    this.state.expenses.sort((item1, item2) => {
+      const firstDay = format(subDays(parseISO(item1.date), 1), 'dd');
+      const secondDay = format(subDays(parseISO(item2.date), 1), 'dd');
+
+      if (parseInt(firstDay) < parseInt(secondDay)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+  };
 
   findAllMonthExpenses = async () => {
     this.setState({refreshing: true, loading: true});
@@ -49,6 +57,8 @@ export default class AllExpenses extends Component {
         response.data.map(item =>
           this.setState({expenses: [...this.state.expenses, item]}),
         );
+
+        this.organizeExpenses();
 
         this.setState({loading: false, refreshing: false});
       })

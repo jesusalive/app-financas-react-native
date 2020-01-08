@@ -110,11 +110,12 @@ export default class addExpense extends Component {
 
   navigateToExpenses = async () => {
     await AsyncStorage.setItem('@RefreshExpenses', 'true');
+    await AsyncStorage.setItem('@RefreshDashboard', 'true');
     this.props.navigation.navigate('Despesas');
   };
 
   render() {
-    const {showDatePicker, date, datePickerMode, fixed} = this.state;
+    const {showDatePicker, date, datePickerMode, fixed, paid} = this.state;
     const year = date.getFullYear();
     return (
       <KeyboardAwareScrollView>
@@ -123,7 +124,7 @@ export default class addExpense extends Component {
             backgroundColor={colors.danger}
             barStyle={'light-content'}
           />
-          <Modal animationIn="pulse" isVisible={true}>
+          <Modal animationIn="pulse" isVisible={this.state.isModalVisible}>
             <View style={styles.modalContainer}>
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>

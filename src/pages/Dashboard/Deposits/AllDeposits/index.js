@@ -29,6 +29,19 @@ export default class AllDeposits extends Component {
     refreshing: false,
   };
 
+  organizeDeposits = () => {
+    this.state.deposits.sort((item1, item2) => {
+      const firstDay = format(subDays(parseISO(item1.date), 1), 'dd');
+      const secondDay = format(subDays(parseISO(item2.date), 1), 'dd');
+
+      if (parseInt(firstDay) < parseInt(secondDay)) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+  };
+
   findAllMonthDeposits = async () => {
     this.setState({refreshing: true, loading: true});
     const token = await AsyncStorage.getItem('@UserToken');
@@ -44,6 +57,8 @@ export default class AllDeposits extends Component {
         response.data.map(item =>
           this.setState({deposits: [...this.state.deposits, item]}),
         );
+
+        this.organizeDeposits();
 
         this.setState({loading: false, refreshing: false});
       })
@@ -78,13 +93,13 @@ export default class AllDeposits extends Component {
 
   renderDeposit = ({item}) => {
     const day = format(subDays(parseISO(item.date), 1), 'dd');
-    const teste = parseFloat(item.value)
+    const value = parseFloat(item.value)
       .toFixed(2) // casas decimais
       .replace('.', ',')
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
 
     return (
-      <DepositItem id={item.id} title={item.reason} value={teste} date={day} />
+      <DepositItem id={item.id} title={item.reason} value={value} date={day} />
     );
   };
 
