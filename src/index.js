@@ -20,11 +20,7 @@ export default class App extends Component {
   verifyUserStatus = async () => {
     const user = await AsyncStorage.getItem('@User');
 
-    if (!!user) {
-      this.setState({userChecked: true, userLogged: !!user});
-      await AsyncStorage.setItem('@RefreshDeposits', 'true');
-      await AsyncStorage.setItem('@RefreshExpenses', 'true');
-    }
+    this.setState({userChecked: true, userLogged: !!user});
   };
 
   verifyTokenExpiration = async () => {
