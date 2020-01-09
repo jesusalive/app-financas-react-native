@@ -109,7 +109,6 @@ export default class addExpense extends Component {
   };
 
   navigateToExpenses = async () => {
-    await AsyncStorage.setItem('@RefreshExpenses', 'true');
     await AsyncStorage.setItem('@RefreshDashboard', 'true');
     this.props.navigation.navigate('Despesas');
   };

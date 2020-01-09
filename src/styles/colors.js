@@ -12,6 +12,7 @@ export default {
   lightBlue: '#071336',
   pending: '#dbbc1f',
   success: '#68d42a',
+  darkSuccess: '#28ad28',
   danger: '#e04848',
 
   transparent: 'transparent',

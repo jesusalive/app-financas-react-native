@@ -120,12 +120,7 @@ export default class AllExpenses extends Component {
       <View style={styles.container}>
         <NavigationEvents
           onDidFocus={async () => {
-            const refresh = await AsyncStorage.getItem('@RefreshExpenses');
-
-            if (refresh == 'true') {
-              await AsyncStorage.removeItem('@RefreshExpenses');
-              this.refreshHandller();
-            }
+            this.refreshHandller();
           }}
         />
         <StatusBar

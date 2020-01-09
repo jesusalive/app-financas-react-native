@@ -110,7 +110,6 @@ export default class addDeposit extends Component {
   };
 
   navigateToDeposits = async () => {
-    await AsyncStorage.setItem('@RefreshDeposits', 'true');
     await AsyncStorage.setItem('@RefreshDashboard', 'true');
     this.props.navigation.navigate('Entradas');
   };

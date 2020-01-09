@@ -129,6 +129,11 @@ const styles = StyleSheet.create({
     color: colors.danger,
     textAlign: 'center',
   },
+
+  error: {
+    fontSize: 10,
+    color: colors.danger,
+  },
 });
 
 export default styles;

@@ -2,20 +2,28 @@ import React, {Component} from 'react';
 
 import {
   View,
-  SafeAreaView,
   Text,
   StatusBar,
   TouchableOpacity,
+  BackHandler,
 } from 'react-native';
-import Lottie from 'lottie-react-native';
-import animation from '~/styles/animations/initialPageAnimation.json';
 
 import styles from './styles';
 import {colors} from '~/styles';
 
 export default class InitialPage extends Component {
+  componentDidMount() {
+    this.addBackButtonBlock();
+  }
+
   goTo = page => {
     this.props.navigation.navigate(page);
+  };
+
+  addBackButtonBlock = () => {
+    BackHandler.addEventListener('hardwareBackPress', function() {
+      return true;
+    });
   };
 
   render() {

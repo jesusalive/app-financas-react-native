@@ -118,7 +118,7 @@ const Routes = userLogged =>
                         color={tintColor}
                       />
                     ),
-                    tabBarColor: colors.success,
+                    tabBarColor: colors.darkSuccess,
                   },
                 },
                 Despesas: {

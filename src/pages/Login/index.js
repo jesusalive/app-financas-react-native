@@ -66,9 +66,6 @@ export default class Login extends Component {
             );
             await AsyncStorage.setItem('@User', data.nome);
             await AsyncStorage.setItem('@UserId', userId);
-            await AsyncStorage.setItem('@RefreshDeposits', 'true');
-            await AsyncStorage.setItem('@RefreshExpenses', 'true');
-            //await AsyncStorage.setItem('@RefreshDashboard', 'true');
             this.props.navigation.navigate('Dashboard');
           })
           .catch(() =>

@@ -8,6 +8,7 @@ import {
   StatusBar,
   TouchableOpacity,
   ActivityIndicator,
+  BackHandler,
 } from 'react-native';
 import LogOutIcon from 'react-native-vector-icons/AntDesign';
 
@@ -35,7 +36,14 @@ export default class Dashboard extends Component {
     balance: '2.500,25',
   };
 
+  addBackButtonBlock = () => {
+    BackHandler.addEventListener('hardwareBackPress', function() {
+      return true;
+    });
+  };
+
   async componentDidMount() {
+    this.addBackButtonBlock();
     this.getUser();
     await this.getAllDepositsValue();
     await this.getExpensesValue();
@@ -233,7 +241,9 @@ export default class Dashboard extends Component {
           </View>
         </View>
         {this.state.err != '' ? (
-          <Text style={styles.error}>{this.state.err}</Text>
+          <View style={styles.loadingBox}>
+            <Text style={styles.error}>{this.state.err}</Text>
+          </View>
         ) : this.state.loading ? (
           <View style={styles.loadingBox}>
             <Text style={styles.loadingText}>Carregando dados</Text>

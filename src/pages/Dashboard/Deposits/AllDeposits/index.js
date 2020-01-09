@@ -114,12 +114,7 @@ export default class AllDeposits extends Component {
       <View style={styles.container}>
         <NavigationEvents
           onDidFocus={async () => {
-            const refresh = await AsyncStorage.getItem('@RefreshDeposits');
-
-            if (refresh == 'true') {
-              await AsyncStorage.removeItem('@RefreshDeposits');
-              this.refreshHandller();
-            }
+            this.refreshHandller();
           }}
         />
         <StatusBar
