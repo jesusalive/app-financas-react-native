@@ -7,13 +7,15 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  ActivityIndicator,
   BackHandler,
+  SafeAreaView,
 } from 'react-native';
 import LogOutIcon from 'react-native-vector-icons/AntDesign';
+import Lottie from 'lottie-react-native';
 
 import styles from './styles';
 import {colors} from '~/styles';
+import animation from '~/styles/animations/moneyLoading.json';
 import api from '~/services/api';
 import {format} from 'date-fns';
 import {NavigationEvents} from 'react-navigation';
@@ -54,7 +56,7 @@ export default class Dashboard extends Component {
     const {valueOfDeposits, valueOfExpenses} = this.state;
     const balance = parseFloat(valueOfDeposits) - parseFloat(valueOfExpenses);
 
-    this.setState({balance});
+    this.setState({balance, loading: false});
   };
 
   calculateDepositsValue = () => {
@@ -87,8 +89,7 @@ export default class Dashboard extends Component {
   };
 
   getExpensesValue = async () => {
-    await this.findAllFixedExpenses();
-    await this.findAllMonthPaidExpenses();
+    await this.findAllMonthExpenses();
     this.calculateExpensesValue();
   };
 
@@ -108,8 +109,6 @@ export default class Dashboard extends Component {
         response.data.map(item =>
           this.setState({deposits: [...this.state.deposits, item]}),
         );
-
-        this.setState({loading: false});
       })
       .catch(() =>
         this.setState({
@@ -130,17 +129,16 @@ export default class Dashboard extends Component {
         response.data.map(item =>
           this.setState({deposits: [...this.state.deposits, item]}),
         );
-
-        this.setState({loading: false});
       })
       .catch(() =>
         this.setState({
           err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',
+          loading: false,
         }),
       );
   };
 
-  findAllMonthPaidExpenses = async () => {
+  findAllMonthExpenses = async () => {
     this.setState({loading: true});
     const token = await AsyncStorage.getItem('@UserToken');
     const user = await AsyncStorage.getItem('@UserId');
@@ -152,37 +150,14 @@ export default class Dashboard extends Component {
         headers: {Authorization: token},
       })
       .then(response => {
-        response.data.map(
-          item =>
-            item.status == 'paid' &&
-            this.setState({expenses: [...this.state.expenses, item]}),
+        response.data.map(item =>
+          this.setState({expenses: [...this.state.expenses, item]}),
         );
-        this.setState({loading: false});
       })
       .catch(() =>
         this.setState({
           err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',
           loading: false,
-        }),
-      );
-  };
-
-  findAllFixedExpenses = async () => {
-    this.setState({loading: true});
-    const token = await AsyncStorage.getItem('@UserToken');
-    const user = await AsyncStorage.getItem('@UserId');
-    await api
-      .get(`/outs/fixed/${user}`, {headers: {Authorization: token}})
-      .then(response => {
-        response.data.map(item =>
-          this.setState({expenses: [...this.state.expenses, item]}),
-        );
-
-        this.setState({loading: false});
-      })
-      .catch(() =>
-        this.setState({
-          err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',
         }),
       );
   };
@@ -246,15 +221,30 @@ export default class Dashboard extends Component {
           </View>
         ) : this.state.loading ? (
           <View style={styles.loadingBox}>
-            <Text style={styles.loadingText}>Carregando dados</Text>
-            <ActivityIndicator size="small" color={colors.primary} />
+            <SafeAreaView>
+              <Lottie
+                speed={2}
+                autoPlay
+                autoSize
+                style={styles.loadingAnimation}
+                resizeMode="contain"
+                loop
+                source={animation}
+              />
+            </SafeAreaView>
+            <Text style={styles.loadingText}>Carregando dados...</Text>
           </View>
         ) : (
           <View style={styles.middleBox}>
             <View />
             <View>
               <Text style={styles.boxTitle}>SALDO</Text>
-              <Text style={styles.value}>
+              <Text
+                style={
+                  this.state.balance < 0
+                    ? styles.negativeValue
+                    : styles.positiveValue
+                }>
                 R$ {this.adjustValue(this.state.balance)}
               </Text>
             </View>

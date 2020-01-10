@@ -31,6 +31,13 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: metrics.screenWidth / 1.1,
   },
+
+  addBtn: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    tintColor: colors.white,
+  },
 });
 
 export default styles;

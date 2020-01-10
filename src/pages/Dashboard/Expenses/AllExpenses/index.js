@@ -71,26 +71,6 @@ export default class AllExpenses extends Component {
       );
   };
 
-  findAllFixedExpenses = async () => {
-    this.setState({refreshing: true, loading: true});
-    const token = await AsyncStorage.getItem('@UserToken');
-    const user = await AsyncStorage.getItem('@UserId');
-    await api
-      .get(`/outs/fixed/${user}`, {headers: {Authorization: token}})
-      .then(response => {
-        response.data.map(item =>
-          this.setState({expenses: [...this.state.expenses, item]}),
-        );
-
-        this.setState({loading: false, refreshing: false});
-      })
-      .catch(() =>
-        this.setState({
-          err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',
-        }),
-      );
-  };
-
   renderExpense = ({item}) => {
     const day = format(subDays(parseISO(item.date), 1), 'dd');
     const teste = parseFloat(item.value)
@@ -111,7 +91,6 @@ export default class AllExpenses extends Component {
 
   refreshHandller = async () => {
     this.setState({expenses: []});
-    await this.findAllFixedExpenses();
     await this.findAllMonthExpenses();
   };
 

@@ -12,7 +12,7 @@ const InitialLoading = () => (
     <StatusBar barStyle={'light-content'} backgroundColor={colors.secondary} />
     <SafeAreaView>
       <Lottie
-        speed={2}
+        speed={1}
         autoPlay
         autoSize
         resizeMode="contain"

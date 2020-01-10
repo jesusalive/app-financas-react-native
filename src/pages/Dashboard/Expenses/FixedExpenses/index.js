@@ -7,13 +7,15 @@ import {
   FlatList,
   StatusBar,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import {format, parseISO, subDays} from 'date-fns';
+import IconAdd from 'react-native-vector-icons/AntDesign';
 
 import FixedExpenseItem from '../FixedExpenseItem/index.js';
-import EmptyExpenseList from '~/components/EmptyExpenseList';
+import EmptyFixedExpenseList from '~/components/EmptyFixedExpenseList';
 import styles from './styles';
 import {colors} from '~/styles';
 import api from '~/services/api';
@@ -50,7 +52,7 @@ export default class FixedExpenses extends Component {
     const token = await AsyncStorage.getItem('@UserToken');
     const user = await AsyncStorage.getItem('@UserId');
     await api
-      .get(`/outs/fixed/${user}`, {headers: {Authorization: token}})
+      .get(`/fixedouts/${user}`, {headers: {Authorization: token}})
       .then(({data}) => {
         this.setState({fixedExpenses: data});
         this.organizeExpenses();
@@ -73,6 +75,7 @@ export default class FixedExpenses extends Component {
     return (
       <FixedExpenseItem
         id={item.id}
+        status={item.status}
         title={item.reason}
         value={teste}
         date={day}
@@ -101,7 +104,7 @@ export default class FixedExpenses extends Component {
               data={this.state.fixedExpenses}
               renderItem={this.renderFixedExpense}
               keyExtractor={item => String(item.id)}
-              ListEmptyComponent={<EmptyExpenseList />}
+              ListEmptyComponent={<EmptyFixedExpenseList />}
               showsVerticalScrollIndicator={false}
               refreshControl={
                 <RefreshControl
@@ -114,6 +117,11 @@ export default class FixedExpenses extends Component {
             />
           </View>
         )}
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('AddFixedExpense')}
+          style={styles.addBtn}>
+          <IconAdd name="pluscircle" color={colors.danger} size={40} />
+        </TouchableOpacity>
       </View>
     );
   }

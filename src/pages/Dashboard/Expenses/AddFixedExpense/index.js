@@ -14,7 +14,6 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-community/async-storage';
-import CheckBox from '@react-native-community/checkbox';
 import {TextInputMask} from 'react-native-masked-text';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
@@ -24,7 +23,7 @@ import styles from './styles';
 import {colors} from '~/styles';
 import api from '~/services/api';
 
-export default class addExpense extends Component {
+export default class addFixedExpense extends Component {
   state = {
     reason: '',
     value: 0,
@@ -79,7 +78,7 @@ export default class addExpense extends Component {
     };
 
     await api
-      .post('/outs', expense, {headers: {Authorization: token}})
+      .post('/fixedouts', expense, {headers: {Authorization: token}})
       .then(response => {
         this.setState({loading: false});
         this.toogleModal();
@@ -106,13 +105,8 @@ export default class addExpense extends Component {
     this.show('date');
   };
 
-  navigateToExpenses = async () => {
-    await AsyncStorage.setItem('@RefreshDashboard', 'true');
-    this.props.navigation.navigate('Despesas');
-  };
-
   render() {
-    const {showDatePicker, date, datePickerMode, fixed, paid} = this.state;
+    const {showDatePicker, date, datePickerMode} = this.state;
     const year = date.getFullYear();
     return (
       <KeyboardAwareScrollView>
@@ -129,7 +123,9 @@ export default class addExpense extends Component {
                 </Text>
                 <TouchableOpacity
                   style={styles.modalBtn}
-                  onPress={() => this.navigateToExpenses()}>
+                  onPress={() =>
+                    this.props.navigation.navigate('FixedExpenses')
+                  }>
                   <Text style={styles.modalBtnText}>Concluir!</Text>
                 </TouchableOpacity>
               </View>
@@ -141,57 +137,68 @@ export default class addExpense extends Component {
             <CloseIcon name="closecircle" size={25} color={colors.white} />
           </TouchableOpacity>
 
-          <TextInput
-            value={this.state.reason}
-            autoCorrect={false}
-            autoCapitalize="words"
-            placeholder="Qual o motivo da despesa?"
-            placeholderTextColor={colors.white}
-            style={styles.input}
-            onChangeText={text => this.setState({reason: text})}
-          />
-
-          <TextInputMask
-            value={this.state.value}
-            type="money"
-            options={{
-              precision: 2,
-              separator: ',',
-              delimiter: '.',
-              unit: 'R$ ',
-            }}
-            style={styles.input}
-            onChangeText={text => {
-              this.setState({value: text});
-            }}
-          />
-
-          <TouchableOpacity
-            onPress={() => this.datepicker()}
-            style={styles.dateBtn}>
-            <Icon name="date" size={20} color={colors.white} />
-            <Text style={styles.textBtn}>
-              {format(this.state.date, 'dd/MM/yyyy')} {'\n'}
-              <Text style={styles.textDate}>
-                Clique para selecionar outra data
-              </Text>
+          <View>
+            <Text style={styles.fixedText}> Adicionar Despesa Fixa </Text>
+            <Text style={styles.fixedDescription}>
+              Todos os meses lembraremos você dela e ao marcá-la como paga
+              automaticamente sera colocada nas suas despesas mensais.
             </Text>
-          </TouchableOpacity>
+          </View>
 
-          {this.state.validateErr != '' && (
-            <Text style={styles.error}>{this.state.validateErr}</Text>
-          )}
+          <View>
+            <TextInput
+              value={this.state.reason}
+              autoCorrect={false}
+              autoCapitalize="words"
+              placeholder="Qual o motivo da despesa?"
+              placeholderTextColor={colors.white}
+              style={styles.input}
+              onChangeText={text => this.setState({reason: text})}
+            />
 
-          <TouchableOpacity
-            onPress={() => this.validateFields()}
-            style={styles.saveBtn}>
-            {this.state.loading ? (
-              <ActivityIndicator size="small" color={colors.danger} />
-            ) : (
-              <Text style={styles.saveText}>Salvar</Text>
+            <TextInputMask
+              value={this.state.value}
+              type="money"
+              options={{
+                precision: 2,
+                separator: ',',
+                delimiter: '.',
+                unit: 'R$ ',
+              }}
+              style={styles.input}
+              onChangeText={text => {
+                this.setState({value: text});
+              }}
+            />
+
+            <TouchableOpacity
+              onPress={() => this.datepicker()}
+              style={styles.dateBtn}>
+              <Icon name="date" size={20} color={colors.white} />
+              <Text style={styles.textBtn}>
+                {format(this.state.date, 'dd/MM/yyyy')} {'\n'}
+                <Text style={styles.textDate}>
+                  Clique para selecionar outra data
+                </Text>
+              </Text>
+            </TouchableOpacity>
+
+            {this.state.validateErr != '' && (
+              <Text style={styles.error}>{this.state.validateErr}</Text>
             )}
-          </TouchableOpacity>
 
+            <TouchableOpacity
+              onPress={() => this.validateFields()}
+              style={styles.saveBtn}>
+              {this.state.loading ? (
+                <ActivityIndicator size="small" color={colors.danger} />
+              ) : (
+                <Text style={styles.saveText}>Salvar</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View />
           {showDatePicker && (
             <DateTimePicker
               minimumDate={new Date(year, 0, 1)}

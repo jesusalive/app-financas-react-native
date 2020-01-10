@@ -83,8 +83,13 @@ const styles = StyleSheet.create({
     elevation: 18,
   },
 
+  loadingAnimation: {
+    height: 100,
+  },
+
   loadingText: {
-    color: colors.primary,
+    color: colors.darkTransparent,
+    marginTop: metrics.baseMargin,
     fontSize: 12,
   },
 
@@ -93,8 +98,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  value: {
+  positiveValue: {
     color: colors.success,
+    fontSize: 30,
+  },
+
+  negativeValue: {
+    color: colors.danger,
     fontSize: 30,
   },
 

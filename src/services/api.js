@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://apiappfinancas.herokuapp.com',
+  baseURL: 'https://jmoneyapp.herokuapp.com',
 });
 
 export default api;

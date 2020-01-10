@@ -56,16 +56,37 @@ const styles = StyleSheet.create({
   },
 
   removeBtn: {
-    marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },
 
+  statusBtn: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    position: 'relative',
+    top: -10,
+  },
+
+  pending: {
+    color: colors.pending,
+    fontSize: 10,
+  },
+
+  paid: {color: colors.success, fontSize: 10},
+  expired: {color: colors.danger, fontSize: 10},
+
+  btnsBlock: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    marginLeft: metrics.baseMargin,
+  },
+
   remove: {
     color: colors.danger,
     fontSize: 10,
-    marginLeft: 3,
   },
 
   modalContainer: {

@@ -29,6 +29,7 @@ import AddDeposit from '~/pages/Dashboard/Deposits/addDeposit';
 
 import IconExpense from 'react-native-vector-icons/MaterialIcons';
 import AddExpense from '~/pages/Dashboard/Expenses/AddExpense';
+import AddFixedExpense from '~/pages/Dashboard/Expenses/AddFixedExpense';
 import AllFixedExpenses from '~/pages/Dashboard/Expenses/FixedExpenses';
 import AllExpenses from './pages/Dashboard/Expenses/AllExpenses';
 
@@ -124,11 +125,14 @@ const Routes = userLogged =>
                 Despesas: {
                   screen: createMaterialTopTabNavigator(
                     {
-                      Todas: {
+                      All: {
                         screen: AllExpenses,
                         navigationOptions: {title: 'Este mês'},
                       },
-                      Fixas: {screen: AllFixedExpenses},
+                      FixedExpenses: {
+                        screen: AllFixedExpenses,
+                        navigationOptions: {title: 'Despesas Fixas'},
+                      },
                     },
                     {
                       tabBarOptions: {
@@ -167,6 +171,7 @@ const Routes = userLogged =>
               },
             ),
             AddDeposit,
+            AddFixedExpense,
             AddExpense,
           },
           {
