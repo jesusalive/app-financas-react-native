@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import './config/Reactotron';
+import OneSignal from 'react-native-onesignal';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from '@react-native-community/netinfo';
+
 import {differenceInDays, format, parseISO} from 'date-fns';
 
 import routesFunction from './routes';
@@ -9,8 +12,28 @@ import api from './services/api';
 
 import InitialLoading from '~/pages/InitialLoading';
 import NoConnection from '~/pages/NoConnection';
+import PushNotification from 'react-native-push-notification';
 
-export default class App extends Component {
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    OneSignal.init('8fe7ea8b-2fd9-4b6f-aa3b-2dc3d04e26ec');
+    OneSignal.addEventListener('received', this.onReceived);
+    OneSignal.addEventListener('opened', this.onOpened);
+    OneSignal.addEventListener('ids', this.onIds);
+  }
+
+  onReceived = data => {};
+  onOpened = notification => {};
+  onIds = id => {};
+
+  componentWillUnmount() {
+    OneSignal.removeEventListener('received', this.onReceived);
+    OneSignal.removeEventListener('opened', this.onOpened);
+    OneSignal.removeEventListener('ids', this.onIds);
+  }
+
   state = {
     userLogged: false,
     userChecked: false,
@@ -65,6 +88,13 @@ export default class App extends Component {
   };
 
   componentDidMount() {
+    PushNotification.configure({
+      onNotification: function(notification) {
+        console.tron.log('NOTIFICATION:', notification);
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
     this.verifyConnection();
     this.verifyTokenExpiration();
     this.verifyUserStatus();
@@ -78,3 +108,5 @@ export default class App extends Component {
     return <Routes />;
   }
 }
+
+export default App;

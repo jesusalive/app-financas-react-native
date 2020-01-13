@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Notification from 'react-native-push-notification';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,9 +16,9 @@ import Lottie from 'lottie-react-native';
 
 import styles from './styles';
 import {colors} from '~/styles';
+import {format} from 'date-fns';
 import animation from '~/styles/animations/moneyLoading.json';
 import api from '~/services/api';
-import {format} from 'date-fns';
 import {NavigationEvents} from 'react-navigation';
 
 export default class Dashboard extends Component {
@@ -50,6 +51,10 @@ export default class Dashboard extends Component {
     await this.getAllDepositsValue();
     await this.getExpensesValue();
     this.calculateBalance();
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress');
   }
 
   calculateBalance = () => {

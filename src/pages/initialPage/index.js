@@ -26,6 +26,10 @@ export default class InitialPage extends Component {
     });
   };
 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress');
+  }
+
   render() {
     return (
       <View style={styles.container}>

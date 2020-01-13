@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.reactnativecommunity.checkbox.ReactCheckBoxPackage;
 import com.reactcommunity.rndatetimepicker.RNDateTimePickerPackage;
