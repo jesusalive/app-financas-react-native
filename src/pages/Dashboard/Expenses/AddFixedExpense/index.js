@@ -9,9 +9,10 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {format} from 'date-fns';
+import {format, subDays, parseISO} from 'date-fns';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
+import Notification from 'react-native-push-notification';
 import * as yup from 'yup';
 import AsyncStorage from '@react-native-community/async-storage';
 import {TextInputMask} from 'react-native-masked-text';
@@ -80,9 +81,25 @@ export default class addFixedExpense extends Component {
     await api
       .post('/fixedouts', expense, {headers: {Authorization: token}})
       .then(response => {
+        this.scheduleNotification(response.data.id, adjustedDate);
         this.setState({loading: false});
         this.toogleModal();
       });
+  };
+
+  scheduleNotification = async (expenseId, expirationDate) => {
+    const user = await AsyncStorage.getItem('@UserId');
+    const {reason} = this.state;
+    const adjustedDate = subDays(parseISO(expirationDate), 2);
+
+    Notification.localNotificationSchedule({
+      id: user + expenseId,
+      userInfo: {id: user + expenseId},
+      title: 'Despesa prestes a vencer',
+      message: `Sua despesa fixa ${reason} está para vencer, não esqueça de pagar!`,
+      date: adjustedDate,
+      repeatType: 'month',
+    });
   };
 
   setDate = (event, date) => {

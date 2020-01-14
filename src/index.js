@@ -12,7 +12,6 @@ import api from './services/api';
 
 import InitialLoading from '~/pages/InitialLoading';
 import NoConnection from '~/pages/NoConnection';
-import PushNotification from 'react-native-push-notification';
 
 class App extends Component {
   constructor(props) {
@@ -87,14 +86,7 @@ class App extends Component {
     });
   };
 
-  componentDidMount() {
-    PushNotification.configure({
-      onNotification: function(notification) {
-        console.tron.log('NOTIFICATION:', notification);
-      },
-      popInitialNotification: true,
-      requestPermissions: true,
-    });
+  async componentDidMount() {
     this.verifyConnection();
     this.verifyTokenExpiration();
     this.verifyUserStatus();

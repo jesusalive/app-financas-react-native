@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import * as yup from 'yup';
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-community/async-storage';
-import {format, parseISO} from 'date-fns';
+import {format, parseISO, isAfter, addMonths, subDays, isToday} from 'date-fns';
 
 import {
   View,
@@ -19,7 +19,7 @@ import {colors} from '~/styles';
 import whiteLogo from '~/styles/img/logo/logoBranco.png';
 
 import api from '~/services/api';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import PushNotification from 'react-native-push-notification';
 
 export default class Login extends Component {
   state = {
@@ -40,6 +40,75 @@ export default class Login extends Component {
       .validate({username, password})
       .then(() => this.signIn())
       .catch(err => this.setState({loginError: err.message, loading: false}));
+  };
+
+  findAllFixedExpenses = async () => {
+    const token = await AsyncStorage.getItem('@UserToken');
+    const user = await AsyncStorage.getItem('@UserId');
+    await api
+      .get(`/fixedouts/${user}`, {headers: {Authorization: token}})
+      .then(({data}) => {
+        this.setState({fixedExpenses: data});
+      })
+      .catch(() =>
+        this.setState({
+          err: 'Erro ao tentar carregar os dados, tente novamente mais tarde!',
+        }),
+      );
+  };
+
+  scheduleNotifications = async () => {
+    const user = await AsyncStorage.getItem('@UserId');
+    await this.findAllFixedExpenses();
+    const {fixedExpenses} = this.state;
+
+    fixedExpenses.length > 0 &&
+      fixedExpenses.map(async item => {
+        if (
+          item.status === 'paid' ||
+          isAfter(new Date(), parseISO(item.date)) ||
+          isToday(parseISO(item.date))
+        ) {
+          const adjustedDate = addMonths(subDays(parseISO(item.date), 2), 1);
+          const itemCode = `@${item.id}-${format(adjustedDate, 'MM')}-${format(
+            adjustedDate,
+            'yyyy',
+          )}`;
+          const notified = await AsyncStorage.getItem(itemCode);
+
+          if (notified == null) {
+            PushNotification.localNotificationSchedule({
+              id: user + item.id,
+              userInfo: {id: user + item.id},
+              title: 'Despesa prestes a vencer',
+              message: `Sua despesa fixa ${item.reason} está para vencer, não esqueça de pagar!`,
+              date: adjustedDate,
+              repeatType: 'month',
+            });
+            await AsyncStorage.setItem(itemCode, 'notified');
+          }
+        } else if (item.status != 'paid') {
+          const adjustedDate = subDays(parseISO(item.date), 2);
+          const itemCode = `@${item.id}-${format(adjustedDate, 'MM')}-${format(
+            adjustedDate,
+            'yyyy',
+          )}`;
+
+          const notified = await AsyncStorage.getItem(itemCode);
+
+          if (notified == null) {
+            PushNotification.localNotificationSchedule({
+              id: user + item.id,
+              userInfo: {id: user + item.id},
+              title: 'Despesa prestes a vencer',
+              message: `Sua despesa fixa ${item.reason} esta prestes a vencer, não esqueça de pagar!`,
+              date: adjustedDate,
+              repeatType: 'month',
+            });
+            await AsyncStorage.setItem(itemCode, 'notified');
+          }
+        }
+      });
   };
 
   signIn = async () => {
@@ -64,8 +133,10 @@ export default class Login extends Component {
               '@UserTokenLastRefresh',
               format(new Date(), 'yyyy-MM-dd').toString(),
             );
+            await AsyncStorage.setItem('@RefreshDashboard', 'true');
             await AsyncStorage.setItem('@User', data.nome);
             await AsyncStorage.setItem('@UserId', userId);
+            await this.scheduleNotifications();
             this.props.navigation.navigate('Dashboard');
           })
           .catch(() =>

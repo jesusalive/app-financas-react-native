@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
+import Notification from 'react-native-push-notification';
 import Icon from 'react-native-vector-icons/Fontisto';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 
@@ -24,7 +25,6 @@ export default class FixedExpenseItem extends Component {
   };
 
   componentDidMount() {
-    this.backToPending();
     this.verifyExpenseStatus();
   }
 
@@ -42,11 +42,6 @@ export default class FixedExpenseItem extends Component {
       parseInt(today) > parseInt(expirationDay)
       ? this.setState({status: 'expired'})
       : this.setState({status: this.props.status});
-  };
-
-  backToPending = async () => {
-    const todayY = format(new Date(), 'MM');
-    console.tron.log(todayY);
   };
 
   payFixedExpense = async () => {
@@ -107,6 +102,7 @@ export default class FixedExpenseItem extends Component {
         headers: {Authorization: token},
       })
       .then(() => {
+        Notification.cancelLocalNotifications({id: userId + this.props.id});
         this.setState({
           loading: false,
           modalIsVisible: false,

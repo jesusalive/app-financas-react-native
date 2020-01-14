@@ -16,7 +16,7 @@ import Lottie from 'lottie-react-native';
 
 import styles from './styles';
 import {colors} from '~/styles';
-import {format} from 'date-fns';
+import {format, parseISO, subDays, addMonths, isAfter} from 'date-fns';
 import animation from '~/styles/animations/moneyLoading.json';
 import api from '~/services/api';
 import {NavigationEvents} from 'react-navigation';
@@ -35,6 +35,7 @@ export default class Dashboard extends Component {
     valueOfExpenses: 0,
     deposits: [],
     expenses: [],
+    fixedExpenses: [],
     loading: false,
     balance: '2.500,25',
   };
@@ -51,10 +52,6 @@ export default class Dashboard extends Component {
     await this.getAllDepositsValue();
     await this.getExpensesValue();
     this.calculateBalance();
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress');
   }
 
   calculateBalance = () => {
@@ -168,7 +165,14 @@ export default class Dashboard extends Component {
   };
 
   logOut = async () => {
-    await AsyncStorage.clear();
+    await AsyncStorage.multiRemove([
+      '@REACTOTRON/clientId',
+      '@User',
+      '@UserId',
+      '@UserToken',
+      '@UserTokenLastRefresh',
+    ]);
+    Notification.cancelAllLocalNotifications();
     this.props.navigation.navigate('Login');
   };
 

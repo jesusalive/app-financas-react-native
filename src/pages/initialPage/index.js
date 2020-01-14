@@ -8,27 +8,27 @@ import {
   BackHandler,
 } from 'react-native';
 
+import {NavigationEvents} from 'react-navigation';
+
 import styles from './styles';
 import {colors} from '~/styles';
 
 export default class InitialPage extends Component {
-  componentDidMount() {
-    this.addBackButtonBlock();
-  }
-
   goTo = page => {
     this.props.navigation.navigate(page);
   };
 
   addBackButtonBlock = () => {
-    BackHandler.addEventListener('hardwareBackPress', function() {
-      return true;
-    });
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   };
 
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress');
+  handleBackButton() {
+    return true;
   }
+
+  removeBackButtonBlock = () => {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  };
 
   render() {
     return (
@@ -37,6 +37,8 @@ export default class InitialPage extends Component {
           backgroundColor={colors.secondary}
           barStyle={'light-content'}
         />
+        <NavigationEvents onDidFocus={() => this.addBackButtonBlock()} />
+        <NavigationEvents onDidBlur={() => this.removeBackButtonBlock()} />
         <View style={styles.welcome}>
           <Text style={styles.title}>Se perde na hora de fazer as contas?</Text>
           <Text style={styles.description}>
